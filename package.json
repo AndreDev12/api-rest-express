@@ -1,0 +1,25 @@
+{
+  "name": "api-rest-express",
+  "version": "1.0.0",
+  "description": "Desarrollo de API REST con Express",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node --watch ./app.js"
+  },
+  "keywords": [
+    "api-rest",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.19.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1"
+  }
+}
