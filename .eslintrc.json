@@ -9,6 +9,8 @@
     "ecmaVersion": "latest"
   },
   "rules": {
-    "semi": ["off", "always"]
+    "semi": ["off", "always"],
+    "space-before-function-paren": "off",
+    "comma-dangle": "off"
   }
 }
