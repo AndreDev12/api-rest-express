@@ -4,7 +4,7 @@
   "description": "Desarrollo de API REST con Express",
   "main": "app.js",
   "scripts": {
-    "dev": "node --watch ./app.js"
+    "start": "node --watch app.js"
   },
   "keywords": [
     "api-rest",
