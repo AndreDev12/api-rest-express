@@ -1,36 +1,30 @@
 import { Router } from 'express';
-import { randomUUID } from 'node:crypto';
 
 import { validateMovie, validatePartialMovie } from '../schemas/movies.js';
-import { readJSON } from '../utils.js';
+import { MovieModel } from '../models/movie.js';
 
 export const moviesRouter = Router();
-const moviesJSON = readJSON('./movies.json');
 
-moviesRouter.get('/', (req, res) => {
+moviesRouter.get('/', async (req, res) => {
   // const origin = req.header('origin');
   // if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
   //   res.header('Access-Control-Allow-Origin', origin);
   // }
 
   const { genre } = req.query;
-  if (genre) {
-    const filteredMovies = moviesJSON.filter((movie) =>
-      movie.genre.some((g) => g.toLowerCase() === genre.toLowerCase())
-    );
-    return res.json(filteredMovies);
-  }
-  res.json(moviesJSON);
+  const movies = await MovieModel.getAll({ genre });
+  res.json(movies);
 });
 
-moviesRouter.get('/:id', (req, res) => {
+moviesRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
-  const movie = moviesJSON.find((movie) => movie.id === id);
+
+  const movie = await MovieModel.getById({ id });
   if (movie) return res.json(movie);
   res.status(404).send({ message: 'Movie not found' });
 });
 
-moviesRouter.post('/', (req, res) => {
+moviesRouter.post('/', async (req, res) => {
   const result = validateMovie(req.body);
 
   if (result.error) {
@@ -38,51 +32,37 @@ moviesRouter.post('/', (req, res) => {
     return res.status(400).json({ error: JSON.parse(result.error.message) });
   }
 
-  // en base de datos
-  const newMovie = {
-    id: randomUUID(), // uuid v4
-    ...result.data,
-  };
-
-  // Esto no sería REST, porque estamos guardando el estado de la aplicación en memoria
-  moviesJSON.push(newMovie);
-
+  const newMovie = await MovieModel.create({ input: result.data });
   res.status(201).json(newMovie);
 });
 
-moviesRouter.delete('/:id', (req, res) => {
+moviesRouter.delete('/:id', async (req, res) => {
   // const origin = req.header('origin');
   // if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
   //   res.header('Access-Control-Allow-Origin', origin);
   // }
 
   const { id } = req.params;
-  const movieIndex = moviesJSON.findIndex((movie) => movie.id === id);
+  const result = await MovieModel.delete({ id });
 
-  if (movieIndex === -1) res.status(404).json({ message: 'Movie not found' });
-  moviesJSON.splice(movieIndex, 1);
+  if (!result) {
+    return res.status(404).json({ message: 'Movie not found' });
+  }
   res.json({ message: 'Movie deleted' });
 });
 
-moviesRouter.patch('/:id', (req, res) => {
+moviesRouter.patch('/:id', async (req, res) => {
   const { id } = req.params;
   const result = validatePartialMovie(req.body);
 
   if (result.error) {
     res.status(400).json({ error: JSON.parse(result.error.message) });
   }
-  const movieIndex = moviesJSON.findIndex((movie) => movie.id === id);
 
-  if (movieIndex === -1) {
+  const updatedMovie = await MovieModel.update({ id, input: result.data });
+  if (!updatedMovie) {
     return res.status(404).json({ message: 'Movie not found' });
   }
 
-  const updateMovie = {
-    ...moviesJSON[movieIndex],
-    ...result.data,
-  };
-
-  moviesJSON[movieIndex] = updateMovie;
-
-  res.json(updateMovie);
+  res.json(updatedMovie);
 });
