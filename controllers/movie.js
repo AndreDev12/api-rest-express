@@ -22,7 +22,7 @@ export class MovieController {
 
   static async create(req, res) {
     const result = validateMovie(req.body);
-
+    console.log(result.data);
     if (result.error) {
       // 422 Unprocessable Entity
       return res.status(400).json({ error: JSON.parse(result.error.message) });

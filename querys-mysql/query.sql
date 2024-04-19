@@ -100,4 +100,4 @@ INSERT INTO movie_genre(movie_id, genre_id) VALUES
 ((SELECT id FROM movie WHERE title='Avatar'), (SELECT id FROM genre WHERE name='Fantasy'));
 
 SELECT BIN_TO_UUID(id) id, title, year, director, duration, poster, rate FROM movie;
-SELECT title, year, director, duration, poster, rate, genre.name AS genre_name FROM movie INNER JOIN movie_genre ON movie.id = movie_genre.movie_id INNER JOIN genre ON movie_genre.genre_id=genre.id WHERE genre.name=?;
+SELECT BIN_TO_UUID(movie.id) AS id, movie.title, movie.year, movie.director, movie.duration, movie.poster, movie.rate, genre.name AS genre FROM movie INNER JOIN movie_genre ON movie.id = movie_genre.movie_id INNER JOIN genre ON movie_genre.genre_id=genre.id WHERE genre.name="?";
