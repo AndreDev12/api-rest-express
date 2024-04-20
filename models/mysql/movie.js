@@ -1,12 +1,4 @@
-import mysql from 'mysql2/promise';
-
-const connection = await mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  port: process.env.DB_PORT,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-});
+import { connection } from '../../db/connection';
 
 export class MovieModel {
   static async getAll({ genre }) {
@@ -35,9 +27,65 @@ export class MovieModel {
     return movies[0];
   }
 
-  static async create({ input }) {}
+  static async create({ input }) {
+    const { title, year, director, duration, poster, rate } = input;
 
-  static async delete({ id }) {}
+    try {
+      const [uuidResult] = await connection.query('SELECT UUID() AS uuid;');
+      const [{ uuid }] = uuidResult;
+      await connection.query(
+        'INSERT INTO movie(id, title, year, director, duration, poster, rate) VALUES(UUID_TO_BIN(?), ?, ?, ?, ?, ?, ?);',
+        [uuid, title, year, director, duration, poster, rate]
+      );
+      const [movies] = await connection.query(
+        'SELECT BIN_TO_UUID(id) AS id, title, year, director, duration, poster, rate FROM movie WHERE id=UUID_TO_BIN(?);',
+        [uuid]
+      );
+      return movies[0];
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  static async update({ id, input }) {}
+  static async delete({ id }) {
+    try {
+      const [resultSetHeader] = await connection.query(
+        'DELETE FROM movie WHERE id=UUID_TO_BIN(?);',
+        [id]
+      );
+      return resultSetHeader.affectedRows;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async update({ id, input }) {
+    const { title, year, director, duration, poster, rate } = input;
+    try {
+      const [movies] = await connection.query(
+        'SELECT BIN_TO_UUID(id) AS id, title, year, director, duration, poster, rate FROM movie WHERE id=UUID_TO_BIN(?);',
+        [id]
+      );
+      const movie = movies[0];
+      await connection.query(
+        'UPDATE movie SET title=?, year=?, director=?, duration=?, poster=?, rate=? WHERE id=UUID_TO_BIN(?);',
+        [
+          title ?? movie.title,
+          year ?? movie.year,
+          director ?? movie.director,
+          duration ?? movie.duration,
+          poster ?? movie.poster,
+          rate ?? movie.rate,
+          id,
+        ]
+      );
+      const [updatedMovie] = await connection.query(
+        'SELECT BIN_TO_UUID(id) AS id, title, year, director, duration, poster, rate FROM movie WHERE id=UUID_TO_BIN(?);',
+        [id]
+      );
+      return updatedMovie[0];
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

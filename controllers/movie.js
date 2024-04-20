@@ -22,7 +22,6 @@ export class MovieController {
 
   static async create(req, res) {
     const result = validateMovie(req.body);
-    console.log(result.data);
     if (result.error) {
       // 422 Unprocessable Entity
       return res.status(400).json({ error: JSON.parse(result.error.message) });
@@ -54,7 +53,6 @@ export class MovieController {
     if (result.error) {
       res.status(400).json({ error: JSON.parse(result.error.message) });
     }
-
     const updatedMovie = await MovieModel.update({ id, input: result.data });
     if (!updatedMovie) {
       return res.status(404).json({ message: 'Movie not found' });
