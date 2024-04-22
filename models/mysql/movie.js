@@ -1,4 +1,4 @@
-import { connection } from '../../db/connection';
+import { connection } from '../../db/connection.js';
 
 export class MovieModel {
   static async getAll({ genre }) {
