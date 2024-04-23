@@ -5,7 +5,6 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node --watch --env-file .env.local api/index.js",
     "start:mysql": "node --watch --env-file .env.local server-with-mysql.js",
     "start:local": "node --watch --env-file .env.local server-with-local.js"
   },
