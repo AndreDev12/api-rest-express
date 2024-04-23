@@ -6,7 +6,7 @@ import { createMovieRouter } from './routes/movies.js';
 // import fs from 'node:fs';
 // const movies = JSON.parse(fs.readFileSync('./movies.json', 'utf-8'));
 export const createApp = ({ movieModel }) => {
-  // const PORT = process.env.PORT ?? 1234;
+  const PORT = process.env.PORT ?? 3000;
 
   const app = express();
   app.use(json());
@@ -30,7 +30,7 @@ export const createApp = ({ movieModel }) => {
   //   res.send(200);
   // });
 
-  app.listen(3000, () => {
-    console.log('Server listening on port http://localhost:3000');
+  app.listen(PORT, () => {
+    console.log(`Server listening on port http://localhost:${PORT}`);
   });
 };
