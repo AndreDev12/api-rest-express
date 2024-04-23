@@ -22,7 +22,7 @@ CREATE TABLE genre(
     name VARCHAR(255) NOT NULL UNIQUE
 );
 
--- Crear la tabla movie_genre
+-- Crear tabla movie_genre
 CREATE TABLE movie_genre(
 	movie_genre_id INT AUTO_INCREMENT PRIMARY KEY,
 	movie_id BINARY(16),
