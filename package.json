@@ -2,7 +2,7 @@
   "name": "api-rest-express",
   "version": "1.0.0",
   "description": "Desarrollo de API REST con Express",
-  "main": "app.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node index.js",
