@@ -1,6 +1,7 @@
 import cors from 'cors';
 
 const ACCEPTED_ORIGINS = [
+  process.env.FRONTEND_URL,
   'http://localhost:8080',
   'http://localhost:1234',
   'https://movies.com',

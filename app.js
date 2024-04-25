@@ -7,8 +7,7 @@ import { corsMiddleware } from './middlewares/cors.js';
 // import fs from 'node:fs';
 // const movies = JSON.parse(fs.readFileSync('./movies.json', 'utf-8'));
 export const createApp = ({ movieModel }) => {
-  const PORT = process.env.PORT ?? 1234;
-
+  const PORT = process.env.PORT;
   const app = express();
   app.use(json());
   app.use(corsMiddleware());
