@@ -25,7 +25,7 @@ Content-Type: application/json
 }
 
 ### Eliminar una película
-DELETE http://localhost:1234/movies/ede4911d-01b5-11ef-93ee-fc58bfb962bb
+DELETE http://localhost:1234/movies/f7ee0a21-0298-11ef-92d8-cecd02c24f20
 
 ### Actualizar parcialmente una película
 PATCH http://localhost:1234/movies/ede4911d-01b5-11ef-93ee-fc58bfb962bb
