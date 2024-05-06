@@ -23,7 +23,7 @@ export class MovieController {
   getById = async (req, res) => {
     try {
       const { id } = req.params;
-      const movie = await this.movieModel.getByI({ id });
+      const movie = await this.movieModel.getById({ id });
       if (movie) return res.json(movie);
       res.status(404).send({ message: 'Movie not found' });
     } catch (error) {
