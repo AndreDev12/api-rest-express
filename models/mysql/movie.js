@@ -2,29 +2,37 @@ import { connection } from '../../db/connection.js';
 
 export class MovieModel {
   static async getAll({ genre }) {
-    if (genre) {
-      const [genres] = await connection.query(
-        'SELECT BIN_TO_UUID(movie.id) AS id, movie.title, movie.year, movie.director, movie.duration, movie.poster, movie.rate, genre.name AS genre FROM movie INNER JOIN movie_genre ON movie.id = movie_genre.movie_id INNER JOIN genre ON movie_genre.genre_id=genre.id WHERE genre.name=?;',
-        [genre]
+    try {
+      if (genre) {
+        const [genres] = await connection.query(
+          'SELECT BIN_TO_UUID(movie.id) AS id, movie.title, movie.year, movie.director, movie.duration, movie.poster, movie.rate, genre.name AS genre FROM movie INNER JOIN movie_genre ON movie.id = movie_genre.movie_id INNER JOIN genre ON movie_genre.genre_id=genre.id WHERE genre.name=?;',
+          [genre]
+        );
+
+        if (genres.length === 0) return [];
+        return genres;
+      }
+
+      const [movies] = await connection.query(
+        'SELECT BIN_TO_UUID(id) AS id, title, year, director, duration, poster, rate FROM movie;'
       );
-
-      if (genres.length === 0) return [];
-      return genres;
+      return movies;
+    } catch (error) {
+      console.log(error);
     }
-
-    const [movies] = await connection.query(
-      'SELECT BIN_TO_UUID(id) AS id, title, year, director, duration, poster, rate FROM movie;'
-    );
-    return movies;
   }
 
   static async getById({ id }) {
-    const [movies] = await connection.query(
-      'SELECT BIN_TO_UUID(id) AS id, title, year, director, duration, poster, rate FROM movie WHERE BIN_TO_UUID(id)=?;',
-      [id]
-    );
-    if (movies.length === 0) return false;
-    return movies[0];
+    try {
+      const [movies] = await connection.query(
+        'SELECT BIN_TO_UUID(id) AS id, title, year, director, duration, poster, rate FROM movie WHERE BIN_TO_UUID(id)=?;',
+        [id]
+      );
+      if (movies.length === 0) return false;
+      return movies[0];
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   static async create({ input }) {

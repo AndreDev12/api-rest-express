@@ -1,5 +1,6 @@
--- Creación de la base de datos
 DROP DATABASE IF EXISTS moviesdb;
+
+-- Creación de la base de datos
 CREATE DATABASE moviesdb;
 
 -- Usar base de datos
