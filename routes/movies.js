@@ -7,7 +7,8 @@ export const createMovieRouter = ({ movieModel }) => {
 
   const moviesRouter = Router();
 
-  moviesRouter.get('/', movieController.getAll);
+  moviesRouter.get('/:artefacto', movieController.getAll); // solo de prueba
+  moviesRouter.get('/:subcategory', movieController.getAll);
   moviesRouter.post('/', movieController.create);
 
   moviesRouter.get('/:id', movieController.getById);
@@ -16,3 +17,5 @@ export const createMovieRouter = ({ movieModel }) => {
 
   return moviesRouter;
 };
+
+// https://www.iberolibrerias.com/comics-y-mangas/comics

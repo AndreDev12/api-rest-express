@@ -1,7 +1,7 @@
 import { connection } from '../../db/connection.js';
 
 export class MovieModel {
-  static async getAll({ genre }) {
+  static async getAll({ genre, offsetValue, sizeByPage }) {
     try {
       if (genre) {
         const [genres] = await connection.query(
@@ -13,10 +13,19 @@ export class MovieModel {
         return genres;
       }
 
+      // simulación de 4 libros por página en cada categoría
       const [movies] = await connection.query(
-        'SELECT BIN_TO_UUID(id) AS id, title, year, director, duration, poster, rate FROM movie;'
+        'SELECT BIN_TO_UUID(id) AS id, title, year, director, duration, poster, rate FROM movie LIMIT ? OFFSET ?;',
+        [sizeByPage, offsetValue]
       );
-      return movies;
+
+      const [movieTable] = await connection.query('SELECT * FROM movie');
+
+      if (movies.length === 0) return false;
+      return {
+        data: movies,
+        metaData: { pagination: { totalItems: movieTable.length } },
+      };
     } catch (error) {
       console.log(error);
     }
