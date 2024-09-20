@@ -18,7 +18,7 @@ export const createApp = ({ movieModel }) => {
 
   // CORS PRE-Flight
   // OPTIONS
-  app.use('/category', createMovieRouter({ movieModel }));
+  app.use('/books/categories', createMovieRouter({ movieModel }));
 
   // app.options('/movies/:id', (req, res) => {
   //   const origin = req.header('origin');

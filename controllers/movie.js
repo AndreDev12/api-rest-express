@@ -39,9 +39,9 @@ export class MovieController {
 
       // Lógica para la paginación por categoría
       // console.log('El valor del offset es:', req.query.page);
-      console.log('El artefacto es: ', req.params.artefacto);
       console.log('El número de página es: ', req.query.page);
-      console.log('El número de páginas es: ', req.query.sizeByPage);
+      console.log('El tamaño por página es: ', req.query.sizeByPage);
+      console.log(req.params.categoryId);
 
       const sizeByPage = req.query.sizeByPage
         ? Number(req.query.sizeByPage)

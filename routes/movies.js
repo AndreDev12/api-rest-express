@@ -7,7 +7,7 @@ export const createMovieRouter = ({ movieModel }) => {
 
   const moviesRouter = Router();
 
-  moviesRouter.get('/:artefacto', movieController.getAll); // solo de prueba
+  moviesRouter.get('/:categoryId', movieController.getAll); // solo de prueba
   moviesRouter.get('/:subcategory', movieController.getAll);
   moviesRouter.post('/', movieController.create);
 
